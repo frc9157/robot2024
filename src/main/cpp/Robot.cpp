@@ -17,6 +17,7 @@ class Robot : public frc::TimedRobot {
   frc::PWMSparkMax m_rearLeftMotor{1};
   frc::PWMSparkMax m_rearRightMotor{2};
   frc::PWMSparkMax m_frontRightMotor{3};
+  frc::PWMSparkMax m_shooter1{4};
   frc::MotorControllerGroup m_leftMotor{m_frontLeftMotor, m_rearLeftMotor};
   frc::MotorControllerGroup m_rightMotor{m_frontRightMotor, m_rearRightMotor};  
   frc::DifferentialDrive m_robotDrive{
@@ -39,7 +40,16 @@ class Robot : public frc::TimedRobot {
 
   void TeleopPeriodic() override {
     // Drive with arcade style
-    m_robotDrive.ArcadeDrive(-(m_stick.GetY()*m_stick.GetY()), -(m_stick.GetX()*m_stick.GetX()));
+    if(m_stick.GetY() <=0 )
+      m_robotDrive.ArcadeDrive((m_stick.GetY()*m_stick.GetY()), (m_stick.GetX()*m_stick.GetX()));
+    else{
+      m_robotDrive.ArcadeDrive(-(m_stick.GetY()*m_stick.GetY()), -(m_stick.GetX()*m_stick.GetX())); 
+    }
+    if(m_stick.GetRawButtonPressed(1)){
+      m_shooter1.Set(1);
+    }else{
+      m_shooter1.Set(0);
+    }
   }
 };
 
